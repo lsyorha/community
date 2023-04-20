@@ -12,7 +12,7 @@
 <body>	
 	<div class="nk-container">
 		<!-- 头部 -->
-		<header class="bg-dark sticky-top">
+		<header class="bg-dark sticky-top" th:fragment="header">
 			<div class="container">
 				<!-- 导航 -->
 				<nav class="navbar navbar-expand-lg navbar-dark">
@@ -25,16 +25,16 @@
 					<div class="collapse navbar-collapse" id="navbarSupportedContent">
 						<ul class="navbar-nav mr-auto">
 							<li class="nav-item ml-3 btn-group-vertical">
-								<a class="nav-link" href="index.html">首页</a>
+								<a class="nav-link" th:href="@{/index}">首页</a>
 							</li>
 							<li class="nav-item ml-3 btn-group-vertical">
 								<a class="nav-link position-relative" href="site/letter.html">消息<span class="badge badge-danger">12</span></a>
 							</li>
 							<li class="nav-item ml-3 btn-group-vertical">
-								<a class="nav-link" href="site/register.html">注册</a>
+								<a class="nav-link" th:href="@{/register}">注册</a>
 							</li>
 							<li class="nav-item ml-3 btn-group-vertical">
-								<a class="nav-link" href="site/login.html">登录</a>
+								<a class="nav-link" th:href="@{/login}">登录</a>
 							</li>
 							<li class="nav-item ml-3 btn-group-vertical dropdown">
 								<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -148,7 +148,7 @@
 							<a class="page-link" th:href="@{${page.path}(current=${page.current-1})}">上一页</a>
 						</li>
 						<li th:class="|page-item ${(page.current==i)?'active':''}|" th:each="i:${#numbers.sequence(page.from,page.to)}">
-							<a class="page-link" href="#" th:text="${i}">1</a>
+							<a class="page-link" th:href="@{${page.path}(current=${i})}" th:text="${i}">1</a>
 						</li>
 						<li th:class="|page-item ${(page.current==page.total)?'disabled':''}|">
 							<a class="page-link" th:href="@{${page.path}(current=${page.current+1})}">下一页</a>
@@ -162,62 +162,16 @@
 		</div>
 
 		<!-- 尾部 -->
-		<footer class="bg-dark">
+		<footer class="bg-dark" th:fragment="bottom">
 			<div class="container">
 				<div class="row">
 					<!-- 二维码 -->
 					<div class="col-4 qrcode">
-						<img src="https://uploadfiles.nowcoder.com/app/app_download.png" class="img-thumbnail" style="width:136px;" />
+						<img th:src="@{/img/QRcode.png}" class="img-thumbnail" style="width:136px;" />
 					</div>
-					<!-- 公司信息 -->
-					<div class="col-8 detail-info">
-						<div class="row">
-							<div class="col">
-								<ul class="nav">
-									<li class="nav-item">
-										<a class="nav-link text-light" href="#">关于我们</a>
-									</li>
-									<li class="nav-item">
-										<a class="nav-link text-light" href="#">加入我们</a>
-									</li>
-									<li class="nav-item">
-										<a class="nav-link text-light" href="#">意见反馈</a>
-									</li>
-									<li class="nav-item">
-										<a class="nav-link text-light" href="#">企业服务</a>
-									</li>
-									<li class="nav-item">
-										<a class="nav-link text-light" href="#">联系我们</a>
-									</li>
-									<li class="nav-item">
-										<a class="nav-link text-light" href="#">免责声明</a>
-									</li>
-									<li class="nav-item">
-										<a class="nav-link text-light" href="#">友情链接</a>
-									</li>
-								</ul>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col">
-								<ul class="nav btn-group-vertical company-info">
-									<li class="nav-item text-white-50">
-										公司地址：北京市朝阳区大屯路东金泉时代3-2708北京牛客科技有限公司
-									</li>
-									<li class="nav-item text-white-50">
-										联系方式：010-60728802(电话)&nbsp;&nbsp;&nbsp;&nbsp;admin@nowcoder.com
-									</li>
-									<li class="nav-item text-white-50">
-										牛客科技©2018 All rights reserved
-									</li>
-									<li class="nav-item text-white-50">
-										京ICP备14055008号-4 &nbsp;&nbsp;&nbsp;&nbsp;
-										<img src="http://static.nowcoder.com/company/images/res/ghs.png" style="width:18px;" />
-										京公网安备 11010502036488号
-									</li>
-								</ul>
-							</div>
-						</div>
+					<!-- 个人信息 -->
+					<div class="col detail-info">
+						<img th:src="@{/img/bottom.png}" class="img-fluid float-right" />
 					</div>
 				</div>
 			</div>
