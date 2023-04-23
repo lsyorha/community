@@ -169,7 +169,8 @@ public class UserService implements CommunityConstant {
 //        验证成功
         loginTicket.setStatus(0);
 //        保留时间等于当前系统时间加设定的保留时间
-        loginTicket.setExpired(new Date(System.currentTimeMillis() + expiredSeconds * 1000));
+//        注意！！！这里不添加l的话运算会被当作int类型进行相加，结果很可能溢出（亲测保留一个月时溢出）
+        loginTicket.setExpired(new Date(System.currentTimeMillis() + expiredSeconds * 1000L));
         loginTicketMapper.insertLoginTicket(loginTicket);
 
         map.put("ticket",loginTicket.getTicket());
@@ -178,6 +179,10 @@ public class UserService implements CommunityConstant {
 //用户注销
     public void logout(String ticket){
         loginTicketMapper.updateStatus(ticket,1);
+    }
+
+    public LoginTicket findLoginTicket(String ticket){
+        return loginTicketMapper.selectByTicket(ticket);
     }
 
 }

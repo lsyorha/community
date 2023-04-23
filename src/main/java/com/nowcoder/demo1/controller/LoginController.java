@@ -111,8 +111,6 @@ public class LoginController implements CommunityConstant {
                         Model model,HttpSession session,HttpServletResponse response){
 //        验证码效验
         String kaptcha =(String) session.getAttribute("kaptcha");
-        System.out.println(kaptcha);
-        System.out.println(code);
         if (StringUtils.isBlank(kaptcha)||StringUtils.isBlank(code)||!kaptcha.equalsIgnoreCase(code)){
             model.addAttribute("codeMsg","验证码错误");
             return "/site/login";
