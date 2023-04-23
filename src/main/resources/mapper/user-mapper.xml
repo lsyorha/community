@@ -29,7 +29,7 @@
         from community.user
         where email = #{email}
     </select>
-<!--id在数据库中设置了自增-->
+<!--id使用keyProperty进行自增-->
     <insert id="insertUser" parameterType="User" keyProperty="id">
         insert into community.user (<include refid="insertFields"/>)
         values(#{username}, #{password}, #{salt}, #{email}, #{type}, #{status}, #{activationCode}, #{headerUrl}, #{createTime})

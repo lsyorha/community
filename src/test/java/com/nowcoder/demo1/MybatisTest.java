@@ -1,7 +1,9 @@
 package com.nowcoder.demo1;
 
 import com.nowcoder.demo1.dao.DiscussPostMapper;
+import com.nowcoder.demo1.dao.LoginTicketMapper;
 import com.nowcoder.demo1.entity.DiscussPost;
+import com.nowcoder.demo1.entity.LoginTicket;
 import com.nowcoder.demo1.entity.User;
 import com.nowcoder.demo1.dao.UserMapper;
 import org.junit.jupiter.api.Test;
@@ -18,6 +20,8 @@ public class MybatisTest {
 
     @Autowired
     private DiscussPostMapper discussPostMapper;
+    @Autowired
+    LoginTicketMapper loginTicketMapper;
 
     @Test
     public void testSelectUser() {
@@ -72,5 +76,29 @@ public class MybatisTest {
     @Test
     public void t1(){
         System.out.println((20>2)?2:3);
+        System.out.println(new Date(System.currentTimeMillis()+3600*24*10));
+    }
+
+    @Test
+    public void testLoginTicket(){
+        LoginTicket loginTicket = new LoginTicket();
+        loginTicket.setUserId(150);
+        loginTicket.setStatus(1);
+        loginTicket.setExpired(new Date(System.currentTimeMillis()+3600*12));
+        loginTicket.setTicket("aaa");
+
+        loginTicketMapper.insertLoginTicket(loginTicket);
+    }
+
+    @Test
+    public void testGetLoginTicket(){
+        LoginTicket loginTicket = loginTicketMapper.selectByTicket("aaa");
+        System.out.println("更新前："+loginTicket);
+
+        loginTicketMapper.updateStatus("aaa",0);
+
+        loginTicket = loginTicketMapper.selectByTicket("aaa");
+        System.out.println("更新后："+loginTicket);
+
     }
 }
