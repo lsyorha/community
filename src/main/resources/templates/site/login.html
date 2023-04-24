@@ -71,7 +71,8 @@
 							<button type="submit" class="btn btn-info text-white form-control">立即登录</button>
 						</div>
 					</div>
-				</form>				
+				</form>
+				<div th:if="${session.loginMsg}" class="alert alert-danger" th:text="${session.loginMsg}"></div>
 			</div>
 		</div>
 

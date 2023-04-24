@@ -1,5 +1,6 @@
 package com.nowcoder.demo1.controller;
 
+import com.nowcoder.demo1.annotation.LoginRequired;
 import com.nowcoder.demo1.entity.User;
 import com.nowcoder.demo1.service.UserService;
 import com.nowcoder.demo1.util.CommunityUtil;
@@ -35,11 +36,24 @@ public class UserController {
     private UserService userService;
     @Autowired
     private HostHolder hostHolder;
+
+    /**
+     * 跳转到用户编辑页面
+     * @return
+     */
+    @LoginRequired
     @RequestMapping(value = "/setting",method = RequestMethod.GET)
     public String getSettingPage(){
         return "/site/setting";
     }
 
+    /**
+     * 上传用户头像
+     * @param headerImage
+     * @param model
+     * @return
+     */
+    @LoginRequired
     @RequestMapping(value = "/upload",method = RequestMethod.POST)
 //    MultipartFile接口继承了InputStreamSource接口
     public String uploadHeader(MultipartFile headerImage, Model model){
@@ -105,6 +119,7 @@ public class UserController {
      * @param request
      * @return
      */
+    @LoginRequired
     @RequestMapping(path = "/updatePassword",method = RequestMethod.POST)
     public String updatePassword(String oldPassword, String newPassword, String confirmPassword,
                                  Model model, HttpServletRequest request){

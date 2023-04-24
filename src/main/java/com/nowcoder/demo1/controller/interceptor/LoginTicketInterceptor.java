@@ -15,7 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.Date;
 
 /**
- * 过滤器，通过查询登录凭证给出下一步操作
+ * 过滤器，通过查询登录凭证信息返回给HostHolder容器与凭证对应的用户
  */
 @Component
 public class LoginTicketInterceptor implements HandlerInterceptor {
