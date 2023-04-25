@@ -38,7 +38,7 @@ public class UserService implements CommunityConstant {
     private String domain;
 
     /**
-     * 查询用户id
+     * 通过id查询用户
      * @param id
      * @return
      */

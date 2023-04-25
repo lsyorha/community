@@ -20,4 +20,6 @@ public interface DiscussPostMapper {
     int selectDiscussPostRows(int userId);
 
     int addDiscussPost(DiscussPost discussPost);
+
+    DiscussPost selectDiscussPost(int id);
 }

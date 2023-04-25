@@ -33,4 +33,8 @@ public class DiscussPostService {
         post.setContent(HtmlUtils.htmlEscape(post.getContent()));
         return discussPostMapper.addDiscussPost(post);
     }
+
+    public DiscussPost findDiscussPost(int id){
+        return discussPostMapper.selectDiscussPost(id);
+    }
 }
