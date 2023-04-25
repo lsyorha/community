@@ -19,4 +19,5 @@ public interface DiscussPostMapper {
 //    int selectDiscussPostRows(@Param("userId") int userId);
     int selectDiscussPostRows(int userId);
 
+    int addDiscussPost(DiscussPost discussPost);
 }

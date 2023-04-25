@@ -1,8 +1,10 @@
 package com.nowcoder.demo1.util;
 
+import com.alibaba.fastjson2.JSONObject;
 import io.micrometer.common.util.StringUtils;
 import org.springframework.util.DigestUtils;
 
+import java.util.Map;
 import java.util.UUID;
 
 public class CommunityUtil {
@@ -23,4 +25,35 @@ public class CommunityUtil {
         return DigestUtils.md5DigestAsHex(key.getBytes());
     }
 
+    /**
+     * 就收用户传入数据，返回JSON字符串
+     * @param code
+     * @param msg
+     * @param map
+     * @return
+     */
+    public static String getJsonString(int code, String msg, Map<String,Object> map){
+        JSONObject json = new JSONObject();
+        json.put("code",code);
+        json.put("msg",msg);
+        if (map != null){
+            for(String key : map.keySet()){
+                json.put("key",map.get(key));
+            }
+        }
+        return json.toJSONString();
+    }
+
+    /**
+     * 传入不同参数时回调
+     * @param code
+     * @param msg
+     * @return
+     */
+    public static String getJsonString(int code, String msg){
+        return getJsonString(code,msg,null);
+    }
+    public static String getJsonString(int code){
+        return getJsonString(code,null,null);
+    }
 }

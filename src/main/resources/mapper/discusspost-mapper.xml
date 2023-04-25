@@ -3,9 +3,13 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nowcoder.demo1.dao.DiscussPostMapper">
-
+<!--查询域-->
     <sql id="selectFields">
         id, user_id, title, content, type, status, create_time, comment_count, score
+    </sql>
+<!--    插入域-->
+    <sql id="insertFields">
+        user_id, title, content, type, status, create_time, comment_count, score
     </sql>
 
     <select id="selectDiscussPosts" resultType="DiscussPost">
@@ -31,5 +35,10 @@
             </if>
         </where>
     </select>
+<!--发布帖子,parameterType可简单直接的实现参数类型的指定和映射-->
+    <insert id="addDiscussPost" parameterType="DiscussPost">
+        insert into community.discuss_post(<include refid="insertFields"/>)
+        values(#{userId},#{title},#{content},#{type},#{status},#{createTime},#{commentCount},#{score})
+    </insert>
 
 </mapper>
