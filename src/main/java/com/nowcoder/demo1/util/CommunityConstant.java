@@ -24,4 +24,12 @@ public interface CommunityConstant {
      * 勾选记住登录信息保留30天
      */
     int REMEMBER_EXPIRED_SECONDS = 3600 * 24 * 30;
+    /**
+     * 评论类型：帖子
+     */
+    int ENTITY_TYPE_POST = 1;
+    /**
+     * 评论类型：评论回复
+     */
+    int ENTITY_TYPE_COMMENT = 2;
 }
