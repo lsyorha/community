@@ -5,76 +5,71 @@ import java.util.Date;
 
 public class Comment {
 
-  private Integer id;
-  private Integer userId;
+  private int id;
+  private int userId;
 //  评论类型，帖子评论，用户评论的回复
-  private Integer entityType;
+  private int entityType;
 //  帖子id
-  private Integer entityId;
+  private int entityId;
 //  回复对象
-  private Integer targetId;
+  private int targetId;
   private String content;
-  private Integer status;
+  private int status;
   private Date createTime;
 
-    @Override
-    public String toString() {
-        return "Comment{" +
-                "id=" + id +
-                ", userId=" + userId +
-                ", entityType=" + entityType +
-                ", entityId=" + entityId +
-                ", targetId=" + targetId +
-                ", content='" + content + '\'' +
-                ", status=" + status +
-                ", createTime=" + createTime +
-                '}';
-    }
+  @Override
+  public String toString() {
+    return "Comment{" +
+            "id=" + id +
+            ", userId=" + userId +
+            ", entityType=" + entityType +
+            ", entityId=" + entityId +
+            ", targetId=" + targetId +
+            ", content='" + content + '\'' +
+            ", status=" + status +
+            ", createTime=" + createTime +
+            '}';
+  }
 
-    public Integer getId() {
+  public int getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(int id) {
     this.id = id;
   }
 
-
-  public Integer getUserId() {
+  public int getUserId() {
     return userId;
   }
 
-  public void setUserId(Integer userId) {
+  public void setUserId(int userId) {
     this.userId = userId;
   }
 
-
-  public Integer getEntityType() {
+  public int getEntityType() {
     return entityType;
   }
 
-  public void setEntityType(Integer entityType) {
+  public void setEntityType(int entityType) {
     this.entityType = entityType;
   }
 
-
-  public Integer getEntityId() {
+  public int getEntityId() {
     return entityId;
   }
 
-  public void setEntityId(Integer entityId) {
+  public void setEntityId(int entityId) {
     this.entityId = entityId;
   }
 
-
-  public Integer getTargetId() {
+  public int getTargetId() {
     return targetId;
   }
 
-  public void setTargetId(Integer targetId) {
+  public void setTargetId(int targetId) {
     this.targetId = targetId;
   }
-
 
   public String getContent() {
     return content;
@@ -84,15 +79,13 @@ public class Comment {
     this.content = content;
   }
 
-
-  public Integer getStatus() {
+  public int getStatus() {
     return status;
   }
 
-  public void setStatus(Integer status) {
+  public void setStatus(int status) {
     this.status = status;
   }
-
 
   public Date getCreateTime() {
     return createTime;
@@ -101,5 +94,4 @@ public class Comment {
   public void setCreateTime(Date createTime) {
     this.createTime = createTime;
   }
-
 }

@@ -45,4 +45,9 @@
     select <include refid="selectFields"/>
         from community.discuss_post where id = #{id}
     </select>
+
+    <update id="updateCommentCount">
+        update community.discuss_post set comment_count = #{commentCount}
+                                      where id = #{id}
+    </update>
 </mapper>
