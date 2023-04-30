@@ -105,8 +105,8 @@ public class DiscussPostController {
                         replyView.put("reply",reply);
     //                  发出人
                         replyView.put("user",userService.findUserById(reply.getUserId()));
-//                        回复对象
-                        User target = reply.getTargetId() == 0 ? null : userService.findUserById(reply.getUserId());
+//                        回复对象,这里要更具targetId，查，debug一天的源头！！！
+                        User target = reply.getTargetId() == 0 ? null : userService.findUserById(reply.getTargetId());
                         replyView.put("target",target);
 
                         replyViewList.add(replyView);
