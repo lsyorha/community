@@ -5,34 +5,31 @@ import java.util.Date;
 
 public class DiscussPost {
 
-  private Integer id;
-  private Integer userId;
+  private int id;
+  private int userId;
   private String title;
   private String content;
-  private Integer type;
-  private Integer status;
+  private int type;
+  private int status;
   private Date createTime;
-  private Integer commentCount;
+  private int commentCount;
   private double score;
 
-
-  public Integer getId() {
+  public int getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(int id) {
     this.id = id;
   }
 
-
-  public Integer getUserId() {
+  public int getUserId() {
     return userId;
   }
 
-  public void setUserId(Integer userId) {
+  public void setUserId(int userId) {
     this.userId = userId;
   }
-
 
   public String getTitle() {
     return title;
@@ -42,7 +39,6 @@ public class DiscussPost {
     this.title = title;
   }
 
-
   public String getContent() {
     return content;
   }
@@ -51,24 +47,21 @@ public class DiscussPost {
     this.content = content;
   }
 
-
-  public Integer getType() {
+  public int getType() {
     return type;
   }
 
-  public void setType(Integer type) {
+  public void setType(int type) {
     this.type = type;
   }
 
-
-  public Integer getStatus() {
+  public int getStatus() {
     return status;
   }
 
-  public void setStatus(Integer status) {
+  public void setStatus(int status) {
     this.status = status;
   }
-
 
   public Date getCreateTime() {
     return createTime;
@@ -78,15 +71,13 @@ public class DiscussPost {
     this.createTime = createTime;
   }
 
-
-  public Integer getCommentCount() {
+  public int getCommentCount() {
     return commentCount;
   }
 
-  public void setCommentCount(Integer commentCount) {
+  public void setCommentCount(int commentCount) {
     this.commentCount = commentCount;
   }
-
 
   public double getScore() {
     return score;
@@ -95,5 +86,4 @@ public class DiscussPost {
   public void setScore(double score) {
     this.score = score;
   }
-
 }

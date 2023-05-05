@@ -17,30 +17,28 @@ public class User {
             '}';
   }
 
-  private Integer id;
+  private int id;
   private String username;
   private String password;
 //  "盐"，在用户设置的密码后添加一串无序字符串，保证安全性
   private String salt;
   private String email;
 //  0-普通用户; 1-超级管理员; 2-版主;
-  private Integer type;
+  private int type;
 //  0-未激活; 1-已激活;
-  private Integer status;
+  private int status;
   private String activationCode;
 //  头像
   private String headerUrl;
   private Date createTime;
 
-
-  public Integer getId() {
+  public int getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(int id) {
     this.id = id;
   }
-
 
   public String getUsername() {
     return username;
@@ -50,7 +48,6 @@ public class User {
     this.username = username;
   }
 
-
   public String getPassword() {
     return password;
   }
@@ -58,7 +55,6 @@ public class User {
   public void setPassword(String password) {
     this.password = password;
   }
-
 
   public String getSalt() {
     return salt;
@@ -68,7 +64,6 @@ public class User {
     this.salt = salt;
   }
 
-
   public String getEmail() {
     return email;
   }
@@ -77,24 +72,21 @@ public class User {
     this.email = email;
   }
 
-
-  public Integer getType() {
+  public int getType() {
     return type;
   }
 
-  public void setType(Integer type) {
+  public void setType(int type) {
     this.type = type;
   }
 
-
-  public Integer getStatus() {
+  public int getStatus() {
     return status;
   }
 
-  public void setStatus(Integer status) {
+  public void setStatus(int status) {
     this.status = status;
   }
-
 
   public String getActivationCode() {
     return activationCode;
@@ -104,7 +96,6 @@ public class User {
     this.activationCode = activationCode;
   }
 
-
   public String getHeaderUrl() {
     return headerUrl;
   }
@@ -113,7 +104,6 @@ public class User {
     this.headerUrl = headerUrl;
   }
 
-
   public Date getCreateTime() {
     return createTime;
   }
@@ -121,5 +111,4 @@ public class User {
   public void setCreateTime(Date createTime) {
     this.createTime = createTime;
   }
-
 }

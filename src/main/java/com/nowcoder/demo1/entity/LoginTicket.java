@@ -5,12 +5,12 @@ import java.util.Date;
 
 public class LoginTicket {
 
-  private Integer id;
-  private Integer userId;
+  private int id;
+  private int userId;
 //  发回给浏览器的登录凭证
   private String ticket;
 //  0有效，1无效
-  private Integer status;
+  private int status;
   private Date expired;
 
     @Override
@@ -24,34 +24,21 @@ public class LoginTicket {
                 '}';
     }
 
-    public LoginTicket() {
-    }
-
-    public LoginTicket(Integer id, Integer userId, String ticket, Integer status, Date expired) {
-        this.id = id;
-        this.userId = userId;
-        this.ticket = ticket;
-        this.status = status;
-        this.expired = expired;
-    }
-
-    public Integer getId() {
+  public int getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(int id) {
     this.id = id;
   }
 
-
-  public Integer getUserId() {
+  public int getUserId() {
     return userId;
   }
 
-  public void setUserId(Integer userId) {
+  public void setUserId(int userId) {
     this.userId = userId;
   }
-
 
   public String getTicket() {
     return ticket;
@@ -61,15 +48,13 @@ public class LoginTicket {
     this.ticket = ticket;
   }
 
-
-  public Integer getStatus() {
+  public int getStatus() {
     return status;
   }
 
-  public void setStatus(Integer status) {
+  public void setStatus(int status) {
     this.status = status;
   }
-
 
   public Date getExpired() {
     return expired;
@@ -78,5 +63,4 @@ public class LoginTicket {
   public void setExpired(Date expired) {
     this.expired = expired;
   }
-
 }
