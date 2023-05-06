@@ -5,6 +5,7 @@ import com.nowcoder.demo1.entity.Page;
 import com.nowcoder.demo1.entity.User;
 import com.nowcoder.demo1.service.MessageService;
 import com.nowcoder.demo1.service.UserService;
+import com.nowcoder.demo1.util.CommunityUtil;
 import com.nowcoder.demo1.util.HostHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,12 +13,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.net.Proxy;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class MessageController {
@@ -29,7 +27,7 @@ public class MessageController {
     private HostHolder hostHolder;
     @Autowired
     private UserService userService;
-
+//私信页列表
     @RequestMapping("/letter/list")
     public String getLetterList(Model model, Page page){
         User user = hostHolder.getUser();
@@ -62,6 +60,7 @@ public class MessageController {
 
         return "/site/letter";
     }
+//    具体用户私信列表
     @RequestMapping(value = "/letter/detail/{conversationId}",method = RequestMethod.GET)
     public String getConversationList(@PathVariable("conversationId") String conversationId, Model model, Page page){
 
@@ -84,7 +83,27 @@ public class MessageController {
 //        私信目标
         model.addAttribute("target",getLetterTarget(conversationId));
 
+//        设置已读
+        List<Integer> ids = getLetterIds(letterList);
+        if (!ids.isEmpty()){
+            messageService.readMessage(ids);
+        }
         return "/site/letter-detail";
+    }
+
+//    获取未读消息列表
+    private List<Integer> getLetterIds(List<Message> letterList){
+        List<Integer> ids = new ArrayList<>();
+
+        if (letterList != null){
+            for (Message message : letterList){
+//                用户为message的接受方以及消息状态0是未读态
+                if (hostHolder.getUser().getId() == message.getToId() && message.getStatus()==0){
+                    ids.add(message.getId());
+                }
+            }
+        }
+        return ids;
     }
 
 //    查询目标对象
@@ -97,6 +116,34 @@ public class MessageController {
         if (hostHolder.getUser().getId() == id0){
             return userService.findUserById(id1);
         }else return userService.findUserById(id0);
+    }
+
+//    发送私信
+    @RequestMapping(value = "/letter/send",method = RequestMethod.POST)
+    @ResponseBody
+    public String sendMessage(String toName,String content){
+        User target = userService.findUserByName(toName);
+
+        if (target == null){
+            return CommunityUtil.getJsonString(1,"目标用户不存在");
+        }
+
+        Message message = new Message();
+        message.setFromId(hostHolder.getUser().getId());
+        message.setCreateTime(new Date());
+        message.setToId(target.getId());
+        message.setContent(content);
+        int toId = message.getToId();
+        int fromId = message.getFromId();
+
+        if (toId > fromId) {
+            message.setConversationId(fromId + "_" + toId);
+        } else {
+            message.setConversationId(toId + "_" + fromId);
+        }
+
+        messageService.addMessage(message);
+        return CommunityUtil.getJsonString(0);
     }
 
 }

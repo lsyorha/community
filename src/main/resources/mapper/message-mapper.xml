@@ -73,16 +73,16 @@
         </if>
     </select>
 
-    <select id="insertMessage" resultType="int">
+    <insert id="insertMessage" parameterType="Message" keyProperty="id">
         insert into community.message(<include refid="insertFields"/>)
         values(#{fromId}, #{toId}, #{conversationId}, #{content}, #{status}, #{createTime})
-    </select>
+    </insert>
 
-    <select id="updateStatus" resultType="int">
+    <update id="updateStatus">
         update community.message set status = #{status}
                                  where id in
    <foreach collection="ids" item="id" open="(" separator="," close=")">#{id}</foreach>
-    </select>
+    </update>
 
 
 </mapper>

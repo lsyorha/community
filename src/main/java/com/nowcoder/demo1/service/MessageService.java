@@ -36,7 +36,7 @@ public class MessageService {
         return messageMapper.insertMessage(message);
     }
 
-    public int updateStatus(List<Integer> ids, int status){
-        return messageMapper.updateStatus(ids, status);
+    public int readMessage(List<Integer> ids){
+        return messageMapper.updateStatus(ids, 1);
     }
 }

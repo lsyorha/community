@@ -20,7 +20,7 @@ public interface MessageMapper {
 //    新增消息
     int insertMessage(Message message);
 //    修改消息的状态
-    int updateStatus(@Param("ids") List<Integer> ids,@Param("Status") int status);
+    int updateStatus(@Param("ids") List<Integer> ids,@Param("status") int status);
 //    上面代码都是github Copilot自动生成的。。。这代码不敲也罢。
 
 }
