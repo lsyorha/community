@@ -29,12 +29,12 @@ public class LoginRequireInterceptor implements HandlerInterceptor {
             Method method = handlerMethod.getMethod();
             LoginRequired loginRequired = method.getAnnotation(LoginRequired.class);
 
-            if ( hostHolder.getUser() != null &&
+/*            if ( hostHolder.getUser() != null &&
                     request.getRequestURI().contains("login") || request.getRequestURI().contains("register")) {
-//              如果已登录用户访问注册或者登录页时会跳转到首页
+//              如果已登录用户访问注册或者登录页时会跳转到首页,通过前端页面隐藏即可，这里画蛇添足反倒注册链接失效
                 response.sendRedirect(request.getContextPath() + "/index");
                 return false;
-            }
+            }*/
             if (loginRequired != null && hostHolder.getUser() == null){
 //                用户未登录访问用户修改页则跳转到登录页
                 request.getSession().setAttribute("loginMsg","请先登录");
