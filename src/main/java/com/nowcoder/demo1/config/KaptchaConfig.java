@@ -8,6 +8,9 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.Properties;
 
+/**
+ * 生成验证图片
+ */
 @Configuration
 public class KaptchaConfig {
     @Bean
