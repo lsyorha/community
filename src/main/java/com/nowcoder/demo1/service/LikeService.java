@@ -50,5 +50,11 @@ public class LikeService {
         String entityLikeKey = RedisKeyUtil.getEntityLikeKey(entityType, entityId);
         return redisTemplate.opsForSet().isMember(entityLikeKey, userId) ? 1 : 0;
     }
+//    查询某用户的获赞数
+    public int findUserLikeCount(int userId){
+        String userLikeKey = RedisKeyUtil.getUserLikeKey(userId);
+        Integer likeCount = (Integer) redisTemplate.opsForValue().get(userLikeKey);
+        return likeCount == null ? 0 : likeCount;
+    }
 
 }

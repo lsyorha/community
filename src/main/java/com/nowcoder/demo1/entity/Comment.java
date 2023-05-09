@@ -14,6 +14,7 @@ public class Comment {
 //  回复对象
   private int targetId;
   private String content;
+//  0-正常;1-删除;
   private int status;
   private Date createTime;
 

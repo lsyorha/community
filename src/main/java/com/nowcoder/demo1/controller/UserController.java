@@ -2,6 +2,7 @@ package com.nowcoder.demo1.controller;
 
 import com.nowcoder.demo1.annotation.LoginRequired;
 import com.nowcoder.demo1.entity.User;
+import com.nowcoder.demo1.service.LikeService;
 import com.nowcoder.demo1.service.UserService;
 import com.nowcoder.demo1.util.CommunityUtil;
 import com.nowcoder.demo1.util.CookieUtil;
@@ -36,6 +37,8 @@ public class UserController {
     private UserService userService;
     @Autowired
     private HostHolder hostHolder;
+    @Autowired
+    private LikeService likeService;
 
     /**
      * 跳转到用户编辑页面
@@ -150,4 +153,19 @@ public class UserController {
         return "redirect:/login";
     }
 
+//    查看用户信息
+    @RequestMapping(path = "/profile/{userId}",method = RequestMethod.GET)
+    public String getProfilePage(@PathVariable("userId") int userId, Model model){
+
+        User user = userService.findUserById(userId);
+        if (user == null){
+            throw new RuntimeException("该用户不存在");
+        }
+
+        model.addAttribute("user",user);
+//        点赞数
+        int likeCount = likeService.findUserLikeCount(userId);
+        model.addAttribute("likeCount",likeCount);
+        return "/site/profile";
+    }
 }
