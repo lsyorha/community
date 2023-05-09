@@ -7,7 +7,9 @@ import com.nowcoder.demo1.entity.Page;
 import com.nowcoder.demo1.entity.User;
 import com.nowcoder.demo1.service.CommentService;
 import com.nowcoder.demo1.service.DiscussPostService;
+import com.nowcoder.demo1.service.LikeService;
 import com.nowcoder.demo1.service.UserService;
+import com.nowcoder.demo1.util.CommunityConstant;
 import com.nowcoder.demo1.util.CommunityUtil;
 import com.nowcoder.demo1.util.HostHolder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +22,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.*;
 
-import static com.nowcoder.demo1.util.CommunityConstant.ENTITY_TYPE_COMMENT;
-import static com.nowcoder.demo1.util.CommunityConstant.ENTITY_TYPE_POST;
 
 @Controller
 @RequestMapping("/discuss")
-public class DiscussPostController {
+public class DiscussPostController implements CommunityConstant {
     @Autowired
     private CommentService commentService;
     @Autowired
@@ -35,6 +35,8 @@ public class DiscussPostController {
 //    调UserService查询用户效率会比多表连接查询慢，但可以降低耦合
     @Autowired
     private UserService userService;
+    @Autowired
+    private LikeService likeService;
 
     /**
      * 接收用户传入的帖子标题和内容，调用业务层处理标题和内容，完成后返回Jason字符串
@@ -64,13 +66,22 @@ public class DiscussPostController {
         return CommunityUtil.getJsonString(0,"发布成功！");
     }
     @RequestMapping(value = "/detail/{discussPostId}",method = RequestMethod.GET)
+//        未登录用户不能查看帖子详情页
+    @LoginRequired
     public String findDiscussPost(@PathVariable("discussPostId") int discussPostId, Model model, Page page){
+        User visit = hostHolder.getUser();
 //        帖子
         DiscussPost post = discussPostService.findDiscussPost(discussPostId);
         model.addAttribute("post",post);
 //        作者
         User user = userService.findUserById(post.getUserId());
         model.addAttribute("user",user);
+//        帖子点赞数
+        long likeCount = likeService.findEntityLikeCount(ENTITY_TYPE_POST, discussPostId);
+        model.addAttribute("likeCount",likeCount);
+//        点赞状态
+        int likeStatus = likeService.findEntityLikeStatus(visit.getId(), ENTITY_TYPE_POST, discussPostId);
+        model.addAttribute("likeStatus",likeStatus);
 //        评论分页信息
         page.setLimit(5);
         page.setPath("/discuss/detail/" + discussPostId);
@@ -91,6 +102,12 @@ public class DiscussPostController {
                 commentView.put("comment",comment);
 //                评论发出作者
                 commentView.put("user",userService.findUserById(comment.getUserId()));
+//                评论点赞数
+                likeCount = likeService.findEntityLikeCount(ENTITY_TYPE_COMMENT, comment.getId());
+                commentView.put("likeCount",likeCount);
+                //点赞状态
+                likeStatus = likeService.findEntityLikeStatus(visit.getId(), ENTITY_TYPE_COMMENT, comment.getId());
+                commentView.put("likeStatus",likeStatus);
 
 //                总回复页
                 List<Comment> replyList = commentService.findCommentsByEntity(
@@ -105,10 +122,15 @@ public class DiscussPostController {
                         replyView.put("reply",reply);
     //                  发出人
                         replyView.put("user",userService.findUserById(reply.getUserId()));
-//                        回复对象,这里要更具targetId，查，debug一天的源头！！！
+//                        回复对象,这里要根据targetId查，debug一天的源头！！！
                         User target = reply.getTargetId() == 0 ? null : userService.findUserById(reply.getTargetId());
                         replyView.put("target",target);
-
+//                        回复的点赞数
+                        likeCount = likeService.findEntityLikeCount(ENTITY_TYPE_COMMENT, reply.getId());
+                        replyView.put("likeCount",likeCount);
+//                        回复点赞的状态
+                        likeStatus = likeService.findEntityLikeStatus(visit.getId(), ENTITY_TYPE_COMMENT, reply.getId());
+                        replyView.put("likeStatus",likeStatus);
                         replyViewList.add(replyView);
                     }
                 }

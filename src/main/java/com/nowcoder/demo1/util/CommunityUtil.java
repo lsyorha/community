@@ -38,7 +38,8 @@ public class CommunityUtil {
         json.put("msg",msg);
         if (map != null){
             for(String key : map.keySet()){
-                json.put("key",map.get(key));
+//                这里是key，不是"key"，n久前的坑，现在才发现
+                json.put(key,map.get(key));
             }
         }
         return json.toJSONString();
