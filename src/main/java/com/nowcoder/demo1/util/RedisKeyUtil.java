@@ -9,6 +9,8 @@ public class RedisKeyUtil {
     private static final String PREFIX_ATTENTION = "attention";
 //    粉丝
     private static final String PREFIX_FAN = "fan";
+//    验证码
+    private static final String PREFIX_KAPTCHA = "kaptcha";
 
 //    某实体赞的个数
 //    like:entity:entityType:entityId -> set(userId)
@@ -29,5 +31,9 @@ public class RedisKeyUtil {
 //    fan:entityType:entityId -> zset(userId,now)
     public static String getFanKey(int entityType,int entityId){
         return PREFIX_FAN + SPLIT + entityType + SPLIT + entityId;
+    }
+//    登录验证码
+    public static String getKaptchaKey(String owner){
+        return PREFIX_KAPTCHA + SPLIT + owner;
     }
 }
