@@ -2,8 +2,10 @@ package com.nowcoder.demo1.controller;
 
 import com.nowcoder.demo1.annotation.LoginRequired;
 import com.nowcoder.demo1.entity.User;
+import com.nowcoder.demo1.service.FollowerService;
 import com.nowcoder.demo1.service.LikeService;
 import com.nowcoder.demo1.service.UserService;
+import com.nowcoder.demo1.util.CommunityConstant;
 import com.nowcoder.demo1.util.CommunityUtil;
 import com.nowcoder.demo1.util.CookieUtil;
 import com.nowcoder.demo1.util.HostHolder;
@@ -25,7 +27,7 @@ import java.io.*;
 
 @Controller
 @RequestMapping("/user")
-public class UserController {
+public class UserController implements CommunityConstant {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     @Value("${community.path.domain}")
     private String domain;
@@ -39,6 +41,8 @@ public class UserController {
     private HostHolder hostHolder;
     @Autowired
     private LikeService likeService;
+    @Autowired
+    private FollowerService followerService;
 
     /**
      * 跳转到用户编辑页面
@@ -161,11 +165,25 @@ public class UserController {
         if (user == null){
             throw new RuntimeException("该用户不存在");
         }
-
+//        用户
         model.addAttribute("user",user);
 //        点赞数
         int likeCount = likeService.findUserLikeCount(userId);
         model.addAttribute("likeCount",likeCount);
+
+//        关注数量
+        long attentionCount = followerService.findAttentionCount(userId,ENTITY_TYPE_USER);
+        model.addAttribute("attentionCount",attentionCount);
+//        粉丝数量
+        long followerCount = followerService.findFanCount(ENTITY_TYPE_USER, userId);
+        model.addAttribute("followerCount",followerCount);
+//        关注状态
+        boolean hasAttention = false;
+        if (hostHolder.getUser() != null){
+            hasAttention = followerService.hasAttention(hostHolder.getUser().getId(),ENTITY_TYPE_USER,userId);
+        }
+        model.addAttribute("hasAttention",hasAttention);
+
         return "/site/profile";
     }
 }
