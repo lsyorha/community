@@ -174,6 +174,11 @@ public class UserService implements CommunityConstant {
 //        保留时间等于当前系统时间加设定的保留时间
 //        注意！！！这里不添加l的话运算会被当作int类型进行相加，结果很可能溢出（亲测保留一个月时溢出）
         loginTicket.setExpired(new Date(System.currentTimeMillis() + expiredSeconds * 1000L));
+//        loginTicket的id值从redis中获取
+        String ticketKeyId = RedisKeyUtil.getTicketKeyId();
+        redisTemplate.opsForValue().increment(ticketKeyId);
+        int id = (int) redisTemplate.opsForValue().get(ticketKeyId);
+        loginTicket.setId(id);
 //        loginTicketMapper.insertLoginTicket(loginTicket);
 //        登录凭证存入Redis
         String redisKey = RedisKeyUtil.getTicketKey(loginTicket.getTicket());

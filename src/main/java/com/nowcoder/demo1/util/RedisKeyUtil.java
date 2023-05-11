@@ -42,4 +42,7 @@ public class RedisKeyUtil {
     public static String getTicketKey(String ticket){
         return PREFIX_TICKET + SPLIT + ticket;
     }
+    public static String getTicketKeyId(){
+        return PREFIX_TICKET + SPLIT + "id";
+    }
 }
