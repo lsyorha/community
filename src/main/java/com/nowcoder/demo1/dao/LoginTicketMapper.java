@@ -2,8 +2,9 @@ package com.nowcoder.demo1.dao;
 
 import com.nowcoder.demo1.entity.LoginTicket;
 import org.apache.ibatis.annotations.*;
-
+//  登录凭证访问程度很频繁，所以考虑存到redis实现，这样就可以把login_ticket表舍弃了
 @Mapper
+@Deprecated
 public interface LoginTicketMapper {
 //
     @Insert({

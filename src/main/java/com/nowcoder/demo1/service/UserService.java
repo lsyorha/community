@@ -1,15 +1,17 @@
 package com.nowcoder.demo1.service;
 
-import com.nowcoder.demo1.dao.LoginTicketMapper;
+//import com.nowcoder.demo1.dao.LoginTicketMapper;
 import com.nowcoder.demo1.dao.UserMapper;
 import com.nowcoder.demo1.entity.LoginTicket;
 import com.nowcoder.demo1.entity.User;
 import com.nowcoder.demo1.util.CommunityConstant;
 import com.nowcoder.demo1.util.CommunityUtil;
 import com.nowcoder.demo1.util.MailUtil;
+import com.nowcoder.demo1.util.RedisKeyUtil;
 import io.micrometer.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -31,7 +33,8 @@ public class UserService implements CommunityConstant {
     private TemplateEngine templateEngine;
 
     @Autowired
-    private LoginTicketMapper loginTicketMapper;
+//    private LoginTicketMapper loginTicketMapper;
+    private RedisTemplate redisTemplate;
     @Value("${server.servlet.context-path}")
     private String contextPath;
     @Value("${community.path.domain}")
@@ -171,18 +174,29 @@ public class UserService implements CommunityConstant {
 //        保留时间等于当前系统时间加设定的保留时间
 //        注意！！！这里不添加l的话运算会被当作int类型进行相加，结果很可能溢出（亲测保留一个月时溢出）
         loginTicket.setExpired(new Date(System.currentTimeMillis() + expiredSeconds * 1000L));
-        loginTicketMapper.insertLoginTicket(loginTicket);
+//        loginTicketMapper.insertLoginTicket(loginTicket);
+//        登录凭证存入Redis
+        String redisKey = RedisKeyUtil.getTicketKey(loginTicket.getTicket());
+        redisTemplate.opsForValue().set(redisKey,loginTicket);
 
         map.put("ticket",loginTicket.getTicket());
         return map;
     }
 //用户注销
     public void logout(String ticket){
-        loginTicketMapper.updateStatus(ticket,1);
+//        loginTicketMapper.updateStatus(ticket,1);
+        String redisKey = RedisKeyUtil.getTicketKey(ticket);
+        LoginTicket loginTicket = (LoginTicket) redisTemplate.opsForValue().get(redisKey);
+//        注销时更新状态
+        loginTicket.setStatus(1);
+        redisTemplate.opsForValue().set(redisKey,loginTicket);
     }
 
     public LoginTicket findLoginTicket(String ticket){
-        return loginTicketMapper.selectByTicket(ticket);
+//        return loginTicketMapper.selectByTicket(ticket);
+//        获取登录凭证的请求经常调用
+        String redisKey = RedisKeyUtil.getTicketKey(ticket);
+        return (LoginTicket) redisTemplate.opsForValue().get(redisKey);
     }
 
     public int updateHeader(int id,String headerUrl){

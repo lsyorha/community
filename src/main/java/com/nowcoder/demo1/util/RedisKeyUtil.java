@@ -11,6 +11,8 @@ public class RedisKeyUtil {
     private static final String PREFIX_FAN = "fan";
 //    验证码
     private static final String PREFIX_KAPTCHA = "kaptcha";
+//    登录凭证
+    private static final String PREFIX_TICKET = "ticket";
 
 //    某实体赞的个数
 //    like:entity:entityType:entityId -> set(userId)
@@ -35,5 +37,9 @@ public class RedisKeyUtil {
 //    登录验证码
     public static String getKaptchaKey(String owner){
         return PREFIX_KAPTCHA + SPLIT + owner;
+    }
+//    登录凭证
+    public static String getTicketKey(String ticket){
+        return PREFIX_TICKET + SPLIT + ticket;
     }
 }
