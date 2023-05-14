@@ -37,4 +37,9 @@
         values(#{userId},#{entityType},#{entityId},#{targetId},#{content},#{status},#{createTime})
     </insert>
 
+    <select id="selectCommentById" resultType="Comment">
+        select <include refid="selectFields"/>
+        from community.comment
+        where id = #{id}
+    </select>
 </mapper>

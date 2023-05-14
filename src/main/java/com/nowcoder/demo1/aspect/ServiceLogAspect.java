@@ -29,6 +29,12 @@ public class ServiceLogAspect {
     public void before(JoinPoint joinPoint){
 //        用户[ip地址]在[时间]访问了[类]
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+
+//        kafka消费时没走Controller，但有经过service
+        if (attributes == null){
+            return;
+        }
+
         HttpServletRequest request = attributes.getRequest();
 
         String ip = request.getRemoteHost();
