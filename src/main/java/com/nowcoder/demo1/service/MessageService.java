@@ -39,4 +39,16 @@ public class MessageService {
     public int readMessage(List<Integer> ids){
         return messageMapper.updateStatus(ids, 1);
     }
+//  查询最新通知
+    public Message findLastNotice(int userId, String topic){
+        return messageMapper.selectLastNotice(userId, topic);
+    }
+
+    public int findNoticeCount(int userId, String topic){
+        return messageMapper.selectNoticeCount(userId,topic);
+    }
+
+    public int findNoticeUnreadCount(int userId, String topic){
+        return messageMapper.selectNoticeUnreadCount(userId, topic);
+    }
 }

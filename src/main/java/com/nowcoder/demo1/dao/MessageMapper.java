@@ -23,4 +23,11 @@ public interface MessageMapper {
     int updateStatus(@Param("ids") List<Integer> ids,@Param("status") int status);
 //    上面代码都是github Copilot自动生成的。。。这代码不敲也罢。
 
+//    查询某个主题下最新的通知
+    Message selectLastNotice(@Param("userId") int userId,@Param("topic")String topic);
+//    查询某个主题下所包含的通知数量
+    int selectNoticeCount(@Param("userId") int userId,@Param("topic")String topic);
+//    查询未读的通知数量
+    int selectNoticeUnreadCount(@Param("userId") int userId,@Param("topic")String topic);
+
 }
