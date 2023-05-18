@@ -1,8 +1,11 @@
 package com.nowcoder.demo1.event;
 
 import com.alibaba.fastjson2.JSONObject;
+import com.nowcoder.demo1.entity.DiscussPost;
 import com.nowcoder.demo1.entity.Event;
 import com.nowcoder.demo1.entity.Message;
+import com.nowcoder.demo1.service.DiscussPostService;
+import com.nowcoder.demo1.service.ElasticsearchService;
 import com.nowcoder.demo1.service.MessageService;
 import com.nowcoder.demo1.util.CommunityConstant;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -22,6 +25,10 @@ public class EvenConsumer implements CommunityConstant {
     private static final Logger logger =  LoggerFactory.getLogger(EvenConsumer.class);
     @Autowired
     private MessageService messageService;
+    @Autowired
+    private DiscussPostService discussPostService;
+    @Autowired
+    private ElasticsearchService elasticsearchService;
 
 //    根据传入的业务类型做出对应的处理方式，去常量定义不同类型的主题对应名称
     @KafkaListener(topics = {TOPIC_COMMENT,TOPIC_LIKE,TOPIC_FOLLOW})
@@ -61,4 +68,24 @@ public class EvenConsumer implements CommunityConstant {
         message.setContent(JSONObject.toJSONString(content));
         messageService.addMessage(message);
     }
+
+//    消费发帖事件
+    @KafkaListener(topics = {TOPIC_PUBLISH})
+    public void handlePublishMessage(ConsumerRecord record){
+        if (record == null || record.value() == null){
+            logger.error("消息内容为空");
+            return;
+        }
+//        解析收到的JSON字符串
+        Event event = JSONObject.parseObject(record.value().toString(),Event.class);
+        if (event == null){
+//            有值但解析JSON无法还原的情况
+            logger.error("消息格式错误");
+            return;
+        }
+
+        DiscussPost post = discussPostService.findDiscussPostById(event.getEntityId());
+        elasticsearchService.saveDiscussPost(post);
+    }
+
 }

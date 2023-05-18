@@ -1,10 +1,8 @@
 package com.nowcoder.demo1.controller;
 
 import com.nowcoder.demo1.annotation.LoginRequired;
-import com.nowcoder.demo1.entity.Comment;
-import com.nowcoder.demo1.entity.DiscussPost;
-import com.nowcoder.demo1.entity.Page;
-import com.nowcoder.demo1.entity.User;
+import com.nowcoder.demo1.entity.*;
+import com.nowcoder.demo1.event.EventProducer;
 import com.nowcoder.demo1.service.CommentService;
 import com.nowcoder.demo1.service.DiscussPostService;
 import com.nowcoder.demo1.service.LikeService;
@@ -37,6 +35,8 @@ public class DiscussPostController implements CommunityConstant {
     private UserService userService;
     @Autowired
     private LikeService likeService;
+    @Autowired
+    private EventProducer eventProducer;
 
     /**
      * 接收用户传入的帖子标题和内容，调用业务层处理标题和内容，完成后返回Jason字符串
@@ -61,6 +61,14 @@ public class DiscussPostController implements CommunityConstant {
         post.setScore(0);
         post.setCommentCount(0);
         discussPostService.addDiscussPost(post);
+
+//        触发发帖事件，用事件是因为发帖后需要更新Elasticsearch中的数据，而Elasticsearch是独立的服务，不需要影响主业务
+        Event event = new Event()
+                .setTopic(TOPIC_PUBLISH)
+                .setUserId(user.getId())
+                .setEntityType(ENTITY_TYPE_POST)
+                .setEntityId(post.getId());
+        eventProducer.fireEvent(event);
 
 //        插入错误的情况后面通过AOP实现
         return CommunityUtil.getJsonString(0,"发布成功！");
