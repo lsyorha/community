@@ -36,7 +36,7 @@
         </where>
     </select>
 <!--发布帖子,parameterType可简单直接的实现参数类型的指定和映射-->
-    <insert id="addDiscussPost" parameterType="DiscussPost">
+    <insert id="addDiscussPost" parameterType="DiscussPost" keyProperty="id">
         insert into community.discuss_post(<include refid="insertFields"/>)
         values(#{userId},#{title},#{content},#{type},#{status},#{createTime},#{commentCount},#{score})
     </insert>

@@ -3,7 +3,9 @@
     <contextName>community</contextName>
     <property name="LOG_PATH" value="D:/work/data"/>
     <property name="APPDIR" value="community"/>
-
+<!--    该配置文件用于配置日志的输出方式，通过springboot的logback-spring.xml文件配置，该文件会覆盖logback.xml文件的配置
+    功能包括控制台输出和文件输出，文件输出分为error、warn、info三种级别，分别对应不同的文件，
+    每天一个文件，最多保存30天，每个文件最大5MB，超过5MB则自动切分文件。-->
     <!-- error file -->
     <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_PATH}/${APPDIR}/log_error.log</file>
