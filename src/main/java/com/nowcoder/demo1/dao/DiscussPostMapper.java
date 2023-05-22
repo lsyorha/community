@@ -23,4 +23,8 @@ public interface DiscussPostMapper {
 
     DiscussPost selectDiscussPost(int id);
     int updateCommentCount(@Param("id") int id,@Param("commentCount") int commentCount);
+//  0-普通; 1-置顶;
+    int updateType(@Param("id") int id, @Param("type") int type);
+// 0-正常; 1-精华; 2-拉黑;
+    int updateStatus(@Param("id") int id, @Param("status") int status);
 }

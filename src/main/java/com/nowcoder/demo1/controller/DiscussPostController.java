@@ -153,4 +153,66 @@ public class DiscussPostController implements CommunityConstant {
         model.addAttribute("comments",commentViewList);
         return "/site/discuss-detail";
     }
+//    置顶&&取消置顶
+    @RequestMapping(path = "/top", method = RequestMethod.POST)
+    @ResponseBody
+    public String setTop(int id){
+        DiscussPost post = discussPostService.findDiscussPostById(id);
+//        获取贴子置顶状态，1为置顶，0为正常，1^1 = 1; 1^0 = 0;
+        int type = post.getType() ^ 1;
+        discussPostService.updateType(id, type);
+//        返回结果
+        Map<String, Object> map = new HashMap<>();
+        map.put("type",type);
+
+//       调kafka，触发事件，更改贴子状态
+        Event event = new Event()
+                .setTopic(TOPIC_PUBLISH)
+                .setUserId(hostHolder.getUser().getId())
+                .setEntityType(ENTITY_TYPE_POST)
+                .setEntityId(post.getId());
+        eventProducer.fireEvent(event);
+
+        return CommunityUtil.getJsonString(0,null,map);
+    }
+
+    //    加精&&取消加精
+    @RequestMapping(path = "/wonderful", method = RequestMethod.POST)
+    @ResponseBody
+    public String setWonderful(int id){
+        DiscussPost post = discussPostService.findDiscussPostById(id);
+//        1为加精，0为正常，1^1 = 1; 1^0 = 0;
+        int status = post.getStatus() ^ 1;
+        discussPostService.updateStatus(id, status);
+//        返回结果
+        Map<String, Object> map = new HashMap<>();
+        map.put("status",status);
+
+//       调kafka，触发事件，更改贴子状态
+        Event event = new Event()
+                .setTopic(TOPIC_PUBLISH)
+                .setUserId(hostHolder.getUser().getId())
+                .setEntityType(ENTITY_TYPE_POST)
+                .setEntityId(post.getId());
+        eventProducer.fireEvent(event);
+
+        return CommunityUtil.getJsonString(0,null,map);
+    }
+
+    @RequestMapping(path = "/delete", method = RequestMethod.POST)
+    @ResponseBody
+    public String setDelete(int id){
+//        1为加精，0为正常，1^1 = 1; 1^0 = 0;
+        discussPostService.updateStatus(id, 2);
+
+//       调kafka，触发事件，更改贴子状态
+        Event event = new Event()
+                .setTopic(TOPIC_DELETE)
+                .setUserId(hostHolder.getUser().getId())
+                .setEntityType(ENTITY_TYPE_POST)
+                .setEntityId(id);
+        eventProducer.fireEvent(event);
+
+        return CommunityUtil.getJsonString(0);
+    }
 }
