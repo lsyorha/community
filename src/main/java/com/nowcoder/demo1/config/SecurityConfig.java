@@ -38,7 +38,7 @@ public class SecurityConfig implements CommunityConstant {
                                         "/user/setting",
                                         "/user/upload",
                                         "/user/updatePassword",
-                                        "/discuss/**",
+                                        "/discuss/add",
                                         "/comment/add/**",
                                         "/letter/**",
                                         "/notice/**",
@@ -51,6 +51,19 @@ public class SecurityConfig implements CommunityConstant {
                                                 AUTHORITY_USER,
                                                 AUTHORITY_ADMIN,
                                                 AUTHORITY_MODERATOR
+                                        )
+                                        .requestMatchers(
+                                                "/discuss/top",
+                                                "/discuss/wonderful"
+                                        )
+                                        .hasAnyAuthority(
+                                                AUTHORITY_MODERATOR
+                                        )
+                                        .requestMatchers(
+                                                "/discuss/delete"
+                                        )
+                                        .hasAnyAuthority(
+                                                AUTHORITY_ADMIN
                                         )
                 //                        任何人都可以访问的路径
                                         .anyRequest().permitAll();

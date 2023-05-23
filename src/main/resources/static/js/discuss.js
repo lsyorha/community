@@ -48,7 +48,7 @@ function setWonderful(){
         function(data){
             data = $.parseJSON(data);
             if (data.code == 0){
-                $("#wonderfulBtn").text(data.type == 1 ? '取消加精' : '加精');
+                $("#wonderfulBtn").text(data.status == 1 ? '取消加精' : '加精');
             }else {
                 alert(data.msg);
             }
