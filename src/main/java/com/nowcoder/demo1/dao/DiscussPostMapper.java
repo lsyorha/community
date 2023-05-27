@@ -11,7 +11,7 @@ import java.util.List;
 public interface DiscussPostMapper {
 
     List<DiscussPost> selectDiscussPosts(@Param("userId") int userId,@Param("offset") int offset,
-                                         @Param("limit") int limit);
+                                         @Param("limit") int limit,@Param("orderMode") int orderMode);
 //    List<DiscussPost> selectDiscussPosts( int userId, int offset, int limit);
 
     // @Param注解用于给参数取别名,
@@ -27,4 +27,7 @@ public interface DiscussPostMapper {
     int updateType(@Param("id") int id, @Param("type") int type);
 // 0-正常; 1-精华; 2-拉黑;
     int updateStatus(@Param("id") int id, @Param("status") int status);
+
+//    更新帖子分数
+    int updateScore(@Param("id") int id, @Param("score") double score);
 }

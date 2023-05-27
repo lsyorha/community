@@ -1,5 +1,7 @@
 package com.nowcoder.demo1.aspect;
 
+import com.nowcoder.demo1.entity.User;
+import com.nowcoder.demo1.util.HostHolder;
 import jakarta.servlet.http.HttpServletRequest;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -7,6 +9,7 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -21,6 +24,9 @@ import java.util.Date;
 @Aspect
 public class ServiceLogAspect {
     private static final Logger logger = LoggerFactory.getLogger(ServiceLogAspect.class);
+
+    @Autowired
+    private HostHolder hostHolder;
 
     @Pointcut("execution(* com.nowcoder.demo1.service.*.*(..))")
     public void pointcut(){}
@@ -41,6 +47,11 @@ public class ServiceLogAspect {
         String now = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date());
         String target = joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName();
 
-        logger.info(String.format("用户[%s],在[%s],访问了[%s]。",ip,now,target));
+        User user = hostHolder.getUser();
+        if (user!=null){
+            logger.info(String.format("%s于[%s],在[%s],访问了[%s]。",user.getUsername(),ip,now,target));
+        }else {
+            logger.info(String.format("未登录用户于[%s],在[%s],访问了[%s]。",ip,now,target));
+        }
     }
 }

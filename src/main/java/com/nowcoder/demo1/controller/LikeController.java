@@ -7,7 +7,9 @@ import com.nowcoder.demo1.service.LikeService;
 import com.nowcoder.demo1.util.CommunityConstant;
 import com.nowcoder.demo1.util.CommunityUtil;
 import com.nowcoder.demo1.util.HostHolder;
+import com.nowcoder.demo1.util.RedisKeyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,6 +29,8 @@ public class LikeController implements CommunityConstant {
     private LikeService likeService;
     @Autowired
     private EventProducer eventProducer;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
 
     /**
@@ -64,6 +68,11 @@ public class LikeController implements CommunityConstant {
                     .setEntityUserId(entityUserId)
                     .setData("postId",postId);
             eventProducer.fireEvent(event);
+        }
+
+        if (entityType == ENTITY_TYPE_POST){
+            String redisKey = RedisKeyUtil.getPostScoreKey();
+            redisTemplate.opsForSet().add(redisKey,postId);
         }
 
         return CommunityUtil.getJsonString(0,null,map);
