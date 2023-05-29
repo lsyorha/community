@@ -30,21 +30,24 @@ public class ShareController implements CommunityConstant {
     @Autowired
     private EventProducer eventProducer;
 
-    @Value("${community.path.domain}")
-    private String domain;
+//    @Value("${community.path.domain}")
+//    private String domain;
 
-    @Value("${server.servlet.context-path}")
-    private String contextPath;
+//    @Value("${server.servlet.context-path}")
+//    private String contextPath;
 
     @Value("${wk.image.storage}")
     private String wkImageStorage;
+
+    @Value("${qiniu.bucket.share.url}")
+    private String shareBucketUrl;
 
     @RequestMapping(path = "/share", method = RequestMethod.GET)
     @ResponseBody
     private String share(String htmlUrl){
 
         if (htmlUrl == null){
-            return CommunityUtil.getJsonString(404,"图片生成的页面路径不能为空");
+            return CommunityUtil.getJsonString(1,"图片生成的页面路径不能为空");
         }
 
 //        文件名随机生成，预防撞名
@@ -60,13 +63,15 @@ public class ShareController implements CommunityConstant {
 
 //        返回访问路径
         Map<String, Object> map = new HashMap<>();
-        String shareUrl = domain + contextPath + "/share/image/" + fileName;
+//        String shareUrl = domain + contextPath + "/share/image/" + fileName;
+//        改为七牛云访问路径
+        String shareUrl =shareBucketUrl + "/" + fileName;
         map.put("shareUrl", shareUrl);
-        System.out.println("shareUrl" + shareUrl);
 
         return CommunityUtil.getJsonString(0,null,map);
     }
 
+//    废弃
 //    获取长图
     @RequestMapping(path = "/share/image/{fileName}", method = RequestMethod.GET)
     public void getShareImage(@PathVariable("fileName") String fileName, HttpServletResponse response) {
