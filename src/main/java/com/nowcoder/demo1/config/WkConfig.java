@@ -19,7 +19,7 @@ public class WkConfig {
     public void init(){
 //        创建wk图片目录
         File file = new File(wkImageStore);
-        System.out.println("经过wk目录创建");
+//        System.out.println("初始化存放wk生成长图的目录");
         if (!file.exists()){
             boolean mkdir = file.mkdir();
             logger.info("创建用于存在wk生成长图状态：" + mkdir + "，地址为：" + wkImageStore);
